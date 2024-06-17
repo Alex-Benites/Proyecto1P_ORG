@@ -10,9 +10,8 @@ package com.mycompany.chacalesgames;
  */
 import java.util.*;
 
-public class ChacalesGame3 {
+public class ChacalesGame4 {
     public static void main(String[] args) {
-        
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
@@ -33,6 +32,7 @@ public class ChacalesGame3 {
         System.out.println("Bienvenido al Juego de Chacales!");
 
         boolean primerTurno = true;
+        Map<Integer, Integer> contadorNumeros = new HashMap<>();
 
         while (tesorosEncontrados < 4 && chacalesEncontrados < 4 && turnosConsecutivos < 3) {
             System.out.println("\n=== Nuevo turno ===");
@@ -55,7 +55,6 @@ public class ChacalesGame3 {
                 System.out.println("1. Retirarse (terminar el juego)");
                 System.out.println("2. Lanzar el dado");
                 System.out.print("Por favor, ingrese una opcion: ");
-
                 int opcion = scanner.nextInt();
 
                 if (opcion == 1) {
@@ -69,6 +68,14 @@ public class ChacalesGame3 {
                     System.out.println("Opción inválida. Intente de nuevo.");
                     continue;
                 }
+            }
+
+            // Contar ocurrencias del número aleatorio
+            contadorNumeros.put(numeroAleatorio, contadorNumeros.getOrDefault(numeroAleatorio, 0) + 1);
+            if (contadorNumeros.get(numeroAleatorio) == 3) {
+                System.out.println("Perdiste porque el número " + numeroAleatorio + " apareció 3 veces.");
+                dinero = 0;
+                break;
             }
 
             if (casillasDescubiertas[casilla]) {
@@ -108,7 +115,6 @@ public class ChacalesGame3 {
             dinero = 0;
         } else if (tesorosEncontrados >= 4) {
             System.out.println("¡Felicidades! Has encontrado los 4 tesoros y ganaste el juego.");
-            
         } else if (turnosConsecutivos >= 3) {
             System.out.println("Perdiste porque descubriste la misma casilla 3 veces seguidas.");
             dinero = 0;
@@ -116,6 +122,12 @@ public class ChacalesGame3 {
 
         System.out.println("\nLa cantidad acumulada de tesoros que ganaste es: $" + dinero);
         System.out.println("Gracias por jugar.");
+        
+        // estas 4 lineas de aqui es para ver cuantas veces se repetieron los numero aleatorios que salieron
+        System.out.println("\nContenido de contadorNumeros:");
+        for (Map.Entry<Integer, Integer> entry : contadorNumeros.entrySet()) {
+            System.out.println("Número " + entry.getKey() + ": " + entry.getValue() + " veces");
+        }
 
         scanner.close();
     }
